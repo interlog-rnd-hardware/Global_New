@@ -18,7 +18,7 @@ char pass[] = "1nterlog4kupadamu";
 char php[] = " /chiller.php";
 //const char* host = "192.168.2.9";
 char host[] = "10.3.141.1";
-const uint16_t port = 80;
+const uint16_t port = 8080;
 
 int status = WL_IDLE_STATUS;
 int statrfid = 0;
@@ -30,7 +30,7 @@ String perangkat = "9010";
 String vardock, varabs, varkon;
 String url;
 String oldurl;
-String mystring, mystring1;
+String mystring, mystring1, oldmystring1;
 String subb, oldsubb;
 String Respon = "";
 String kirim, oldkirim;
@@ -67,10 +67,11 @@ void setup()
 
 void loop()
 {
- 
   detectcard();
   delay(50);
-   
+//   Serial.print(oldmystring1);
+//  Serial.print(" ");
+//  Serial.println(mystring1);
   if(count++ % 2 == 0) //menyatakan bahwa klo dia genap
   {
     mystring2 = mystring1;
@@ -79,35 +80,22 @@ void loop()
   {
     mystring = mystring1;
   }
-//  if(mystring.startsWith ("0") || mystring2.startsWith("0"))
-//  {
     if(mystring.startsWith ("0"))
     {
      varabs = mystring;
-     
     }
-    
-    else if(mystring2.startsWith ("0"))
+    if(mystring2.startsWith ("0"))
     {
      varabs = mystring2;
     }
-//  }
-
-//   else if(mystring.startsWith("1") || mystring2.startsWith("1"))
-//  {
-     if(mystring.startsWith ("1"))
+    if(mystring.startsWith ("1"))
     {
      varkon = mystring;
     }
-    
-     if(mystring2.startsWith ("1"))
+    if(mystring2.startsWith ("1"))
     {
      varkon = mystring2;
     }
-//  }
-
-//   else if(mystring.startsWith("2")|| mystring2.startsWith("2"))
-//  {
     if(mystring.startsWith ("2"))
     {
      vardock = mystring;
@@ -117,8 +105,33 @@ void loop()
      vardock = mystring2;
     }
 
-  
-    
+    if (mystring1.startsWith("0") && oldmystring1 == "" || mystring1 == "" && oldmystring1.startsWith("0"))
+    {
+      stat1 = '1';
+    }
+    if (mystring1.startsWith("1") && oldmystring1 == "" || mystring1 == "" && oldmystring1.startsWith("1"))
+    {
+      stat2 = '1';
+    }
+    if (mystring1.startsWith("2") && oldmystring1 == "" || mystring1 == "" && oldmystring1.startsWith("2"))
+    {
+      stat3 = '1';
+    }
+    if (mystring1.startsWith("1") && oldmystring1.startsWith("2") || mystring1.startsWith("2") && oldmystring1.startsWith("1"))
+    {
+      stat2 = '1';
+      stat3 = '1';
+    }
+    if (mystring1.startsWith("0") && oldmystring1.startsWith("2") || mystring1.startsWith("2") && oldmystring1.startsWith("0"))
+    {
+      stat1 = '1';
+      stat3 = '1';
+    }
+    if (mystring1.startsWith("0") && oldmystring1.startsWith("1") || mystring1.startsWith("1") && oldmystring1.startsWith("0"))
+    {
+      stat1 = '1';
+      stat2 = '1';
+    }
   String url="";
   String mood = "?mood";
   
@@ -127,9 +140,9 @@ void loop()
   varabs.toCharArray(cvarabs,7);
   
   kirim += perangkat;    kirim += "~";
-  kirim += cvarkon;      kirim += "~";
-  kirim += cvardock;     kirim += "~";
   kirim += cvarabs;      kirim += "~";
+  kirim += cvarkon;     kirim += "~";
+  kirim += cvardock;      kirim += "~";
   kirim += stat1;        kirim += "~";
   kirim += stat2;        kirim += "~";
   kirim += stat3;          
@@ -145,11 +158,16 @@ void loop()
     Serial.println(url); 
   }
   oldurl = url;
+  oldmystring1 = mystring1;
   mystring="";
   mystring1="";
   mystring2=""; 
   kirim="";
   url="";
+  stat1 = '0';
+  stat2 = '0';
+  stat3 = '0';
+  
   
 
 }
