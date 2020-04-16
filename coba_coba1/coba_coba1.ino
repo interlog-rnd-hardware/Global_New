@@ -111,29 +111,72 @@ void loop()
     if (mystring1.startsWith("0") && oldmystring1 == "" || mystring1 == "" && oldmystring1.startsWith("0"))
     {
       stat1 = '1';
+//      buzzer_tone(1);
+      digitalWrite(led_r, HIGH);
+      digitalWrite(led_g, LOW);
+      digitalWrite(led_b, LOW);
+      delay(100);
+      digitalWrite(led_r, LOW);
+      digitalWrite(led_g, LOW);
+      digitalWrite(led_b, LOW);
+//      buzzer_tone(0);
     }
     if (mystring1.startsWith("1") && oldmystring1 == "" || mystring1 == "" && oldmystring1.startsWith("1"))
     {
       stat2 = '1';
+//      buzzer_tone(1);
+      digitalWrite(led_r, HIGH);
+      digitalWrite(led_g, LOW);
+      digitalWrite(led_b, LOW);
+      delay(100);
+      digitalWrite(led_r, LOW);
+      digitalWrite(led_g, LOW);
+      digitalWrite(led_b, LOW);
+//      buzzer_tone(0);
     }
     if (mystring1.startsWith("2") && oldmystring1 == "" || mystring1 == "" && oldmystring1.startsWith("2"))
     {
       stat3 = '1';
+      digitalWrite(led_r, LOW);
+      digitalWrite(led_g, HIGH);
+      digitalWrite(led_b, LOW);
     }
     if (mystring1.startsWith("1") && oldmystring1.startsWith("2") || mystring1.startsWith("2") && oldmystring1.startsWith("1"))
     {
       stat2 = '1';
       stat3 = '1';
+      digitalWrite(led_r, LOW);
+      digitalWrite(led_g, HIGH);
+      digitalWrite(led_b, LOW);
     }
     if (mystring1.startsWith("0") && oldmystring1.startsWith("2") || mystring1.startsWith("2") && oldmystring1.startsWith("0"))
     {
       stat1 = '1';
       stat3 = '1';
+      digitalWrite(led_r, LOW);
+      digitalWrite(led_g, HIGH);
+      digitalWrite(led_b, LOW);
+      
     }
     if (mystring1.startsWith("0") && oldmystring1.startsWith("1") || mystring1.startsWith("1") && oldmystring1.startsWith("0"))
     {
       stat1 = '1';
       stat2 = '1';
+      digitalWrite(led_r, LOW);
+      digitalWrite(led_g, HIGH);
+      digitalWrite(led_b, LOW);
+    }
+    if (stat1 == '0' && stat2 == '0' && stat3 == '0') //kondisi ketika ga ada kartu
+    {
+//      buzzer_tone(1);
+      digitalWrite(led_r, HIGH);
+      digitalWrite(led_g, LOW);
+      digitalWrite(led_b, LOW);
+      delay(100);
+      digitalWrite(led_r, LOW);
+      digitalWrite(led_g, LOW);
+      digitalWrite(led_b, LOW);
+//      buzzer_tone(0);
     }
   String url="";
   String mood = "?mood";
