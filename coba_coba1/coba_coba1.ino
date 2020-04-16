@@ -47,6 +47,9 @@ char cvarkon[7];
 char cvardock[7];
 char cvarabs[7];
 
+bool statusKomunikasiWifi = false;
+bool responDariServer = false;
+
 MFRC522 mfrc522 (SS_PIN, RST_PIN);
 WiFiEspClient client;
 
@@ -55,14 +58,14 @@ void setup()
   Serial.begin(9600);
   perangkat.toCharArray(cperangkat, 5);
   pinMode(buzzer, OUTPUT);
-  //SetSockStatus();
+  SetSockStatus();
   digitalWrite(led_r, HIGH);
   digitalWrite(led_g, LOW);
   digitalWrite(led_b, LOW);
   delay(200);
   SPI.begin();
   mfrc522.PCD_Init();
-  //init_awal();
+  init_awal();
 }
 
 void loop()
@@ -141,8 +144,8 @@ void loop()
   
   kirim += perangkat;    kirim += "~";
   kirim += cvarabs;      kirim += "~";
-  kirim += cvarkon;     kirim += "~";
-  kirim += cvardock;      kirim += "~";
+  kirim += cvarkon;      kirim += "~";
+  kirim += cvardock;     kirim += "~";
   kirim += stat1;        kirim += "~";
   kirim += stat2;        kirim += "~";
   kirim += stat3;          
@@ -155,7 +158,25 @@ void loop()
   
   if(oldurl != url)
   {
-    Serial.println(url); 
+    delay(500);
+    if (client.connect(host, port)) 
+      {         
+       client.print("GET");
+       client.print(url);
+       client.println(" HTTP/1.1");
+       client.println("Host: 10.3.141.1");
+       client.println("Connection: close");
+       client.println();
+       Serial.println(url);
+       digitalWrite(led_r, LOW);
+       digitalWrite(led_g, LOW);
+       digitalWrite(led_b, HIGH);
+       buzzer_tone(1);
+       delay(1000);
+       buzzer_tone(0);
+       delay(50);
+      }
+  SetSockStatus();
   }
   oldurl = url;
   oldmystring1 = mystring1;
@@ -168,6 +189,4 @@ void loop()
   stat2 = '0';
   stat3 = '0';
   
-  
-
 }
